@@ -1,49 +1,29 @@
-import logo from './logo.svg'
-import './App.css'
-import React, { useEffect } from 'react'
-import axios from 'axios'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
+//import components
+import Footer from './components/Footer'
+import Header from './components/Header'
+import Home from './pages/Home'
+/*import Login from './pages/Login'
+import Profile from './pages/Profile'
+import Error from './pages/Error'*/
+//import component css
+import GlobalStyle from './utils/style/GlobalStyle'
+
+/**
+ * routes & renders pages
+ * @returns {JSX}
+ */
 function App() {
-    useEffect(() => {
-        // Step 1 : "Hello, Heroku ! 👋"
-        axios
-            .get('https://blooming-basin-83218-ff39a65835a7.herokuapp.com')
-            .then((res) => console.log(res.data))
-
-        // Step 2 : "Get JWT token 🔓"
-        axios
-            .post(
-                'https://blooming-basin-83218-ff39a65835a7.herokuapp.com/api/login',
-                { username: 'pikachu', password: 'pikachu' },
-                { headers: { 'Content-Type': 'application/json' } },
-            )
-            .then((res) => res.data)
-            .then((res) => {
-                console.log(res)
-                return res.token
-            })
-            .then((token) => fetchPokemonlist(token))
-    }, [])
-
-    // Step 3 : "Get pokemon list 🎉"
-    const fetchPokemonlist = (token) => {
-        return axios
-            .get(
-                'https://blooming-basin-83218-ff39a65835a7.herokuapp.com/api/pokemons',
-                {
-                    headers: { Authorization: `Bearer ${token}` },
-                },
-            )
-            .then((res) => res.data)
-            .then((res) => console.log(res))
-    }
     return (
-        <div className="App">
-            <header className="App-header">
-                <h1>Hello, Heroku ! 👋</h1>
-                <img src={logo} className="App-logo" alt="logo" />
-            </header>
-        </div>
+        <Router>
+            <GlobalStyle />
+            <Header />
+            <Routes>
+                <Route exact path="/" element={<Home />} />
+            </Routes>
+            <Footer />
+        </Router>
     )
 }
 
